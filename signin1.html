@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Signin</title>
+        <style>
+                * {
+                        padding: 0px;
+                        margin: 0px
+                }
+
+                form {
+
+                        border: 1px solid black;
+                        width: 220px;
+                        margin: auto;
+                        margin-top: 20px;
+                }
+
+                form input {
+                        padding: 10px 12px;
+                        margin: 10px;
+                }
+
+                button {
+                        display: block;
+                        margin: auto;
+                }
+        </style>
+</head>
+
+<body>
+        <form>
+
+                <input id="email" type="email" placeholder="Mail">
+                <input id="subbtn" type="text" placeholder="Password">
+                <button>Signin</button>
+        </form>
+
+</body>
+
+</html>
+<script>
+        let form = document.querySelector("form");
+        // step2
+        // we have to take data from local storage
+        let userData = JSON.parse(localStorage.getItem("localdata")) || [];
+
+
+        form.addEventListener("submit", submitform)
+        function submitform() {
+                event.preventDefault()
+                let data = {
+
+                        email: form.email.value,
+                        password: form.subbtn.value,
+
+                }
+                // console.log(data)
+
+
+
+                // step-3
+
+                // we have to check emails exist previously or not
+                if (checkSignin(data.email, data.password) === true) {
+
+                        // step-4
+                        // we have to set data in a local storage so we can access the data for line no.50 or step2
+                        userData.push(data)
+                        localStorage.setItem("signin", JSON.stringify(userData))
+                        alert("you have succefully sign in")
+
+                } else {
+                        alert("Wrong Details")
+                }
+
+
+
+        }
+
+        // emails are going in this function whether emails of previously stored are matching or not,
+        // email=>which user is typing,elem.email=>the mails which are already stored in local storage
+        function checkSignin(email, password) {
+                let filter = userData.filter(function (elem) {
+
+                        return (password === elem.password && email === elem.email)
+                })
+                if (filter.length > 0) {
+                        return true;
+                } else {
+                        return false
+                }
+                // if length 0,meaning email exists?
+
+        }
+</script>
